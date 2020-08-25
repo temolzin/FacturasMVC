@@ -140,6 +140,125 @@
                 </form>
             </div>
         </div>
+        </div>
+        </div>
+
+    <!-- Modal Consulta-->
+    <div class="modal fade" id="modalConsulta" tabindex="-1" role="dialog" aria-labelledby="ModalConsulta" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Factura</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="formConsulta" id="formConsulta" name="form" method="post">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Id Factura</label>
+                                        <input type="text" class="form-control" id="idfacturaconsulta" name="idfacturaconsullta" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="genero">Cliente</label>
+                                        <select disabled class="custom-select" name="clienteconsulta" id="clienteconsulta">
+                                            <?php
+                                                include_once 'model/cliente.php';
+                                                foreach ($this->clientes as $row) {
+                                                    $cliente = new Cliente();
+                                                    $cliente = $row;
+                                                    echo '<option value="' . $cliente->cliId . '"> ' . $cliente->cliNombre . ' </option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="genero">Moneda</label>
+                                        <select disabled readonly="" onchange="calcularTotal();" class="custom-select" name="monedaconsulta" id="monedaconsulta">
+                                            <?php
+                                                include_once 'model/moneda.php';
+                                                foreach ($this->monedas as $row) {
+                                                    $moneda = new Moneda();
+                                                    $moneda = $row;
+                                                    echo '<option value="' . $moneda->monId . '"> ' . $moneda->monAbr . ' </option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="fecha">Fecha Factura</label>
+                                        <input type="date" readonly name="fechaconsulta" id="fechaconsulta" class="form-control" value="<?php echo date("Y-m-d");?>" placeholder="Fecha Factura" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="bg-gradient-indigo" />
+                            <div class="row">
+                                <div class="card-body col-lg-12">
+                                    <table id="tablaFacturaDetalleConsulta" name="tablaFacturaDetalleConsulta" class="table table-bordered table-hover dt-responsive nowrap" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>ID FacturaDetalle</th>
+                                            <th>Concepto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Importe</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <hr class="bg-gradient-green">
+                            <div class="row">
+                                <div class="col-4 col-md-4">
+                                    <div class="form-group">
+                                        <label for="rfc">Tipo de cambio</label>
+                                        <input type="text" readonly onkeypress="return calcularTotal();" onblur="return calcularTotal();" name="tipocambioconsulta" id="tipocambioconsulta" class="form-control" maxlength="13" placeholder="Tipo de cambio" value="">
+                                    </div>
+                                </div>
+                                <div class="col-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label>% IVA</label>
+                                        <input type="number" readonly onkeypress="return calcularTotal();" onblur="return calcularTotal();" class="form-control" id="ivaconsulta" name="ivaconsulta" placeholder="IVA" required/>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-sm-4">
+                                    <div class="form-group">
+                                        <label>Subtotal</label>
+                                        <input type="number" readonly onkeypress="return calcularTotal();" onblur="return calcularTotal();" class="form-control" id="subtotalconsulta" name="subtotalconsulta" placeholder="$ Subtotal" required/>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Total</label>
+                                        <input type="text" class="form-control" id="totalconsulta" name="totalconsulta" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button class="btn btn-danger" id="btnGenerarPDF" name="btnGenerarPDF"><i class="fas fa-file-pdf" type="button">  Generar PDF</i></button>
+<!--                            <a class="btn btn-danger" href="--><?php //echo constant('URL').'Factura/GenerarPDF?id='?><!--"><i class="fas fa-file-pdf" type="button">  Generar PDF</i></a>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+            </div>
+
 <?php $menu->footer() ?>
 
 <script type="text/javascript">
@@ -194,7 +313,8 @@
                 {data: "fac_tc"},
                 {
                     data: null,
-                    "defaultContent": "<button class='editar btn btn-primary' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
+                    "defaultContent": "<button class='consulta btn btn-primary' data-toggle='modal' data-target='#modalConsulta'><i class=\"fa fa-eye\"></i></button> " +
+                        "<button class='editar btn btn-warning' data-toggle='modal' data-target='#modalActualizar'><i class=\"fa fa-edit\"></i></button> " +
                         "<button class='eliminar btn btn-danger' data-toggle='modal' data-target='#modalEliminar'><i class=\"far fa-trash-alt\"></i></button>"
                 }
             ],
@@ -212,7 +332,9 @@
         $('#tablaFactura tbody').on('click', 'tr', function() {
             var data = table.row(this).data();
             console.log("DATA: " + data.fac_id);
+            /*MODAL ELIMINAR*/
             var idEliminar = $('#idEliminar').val(data.fac_id);
+            /*MODAL ACTUALIZAR*/
             var idfactura = $('#idfactura').val(data.fac_id);
             var cliente = $("#cliente option[value='"+ data.cli_id +"']").attr("selected",true);
             var cliente2 = $("#cliente").val(data.cli_id).trigger('change.select2');
@@ -223,6 +345,22 @@
             var iva = $("#iva").val(data.fac_iva);
             var total = $("#total").val(data.fac_tot);
             var tipocambio = $("#tipocambio").val(data.fac_tc);
+            /*MODAL CONSULTA*/
+            var idfactura = $('#idfacturaconsulta').val(data.fac_id);
+            var cliente = $("#clienteconsulta option[value='"+ data.cli_id +"']").attr("selected",true);
+            var cliente2 = $("#clienteconsulta").val(data.cli_id).trigger('change.select2');
+            var moneda = $("#monedaconsulta option[value='"+ data.mon_id +"']").attr("selected",true);
+            var moneda2 = $("#monedaconsulta").val(data.mon_id).trigger('change.select2');
+            var fecha = $("#fechaconsulta").val(data.fac_fec);
+            var subtotal = $("#subtotalconsulta").val(data.fac_sub);
+            var iva = $("#ivaconsulta").val(data.fac_iva);
+            var total = $("#totalconsulta").val(data.fac_tot);
+            var tipocambio = $("#tipocambioconsulta").val(data.fac_tc);
+
+            mostrarRegistrosFacturaDetalle();
+            $('#btnGenerarPDF').on('click', function() {
+                window.open ("<?php echo constant('URL');?>Factura/GenerarPDF?id=" + idfactura.val(), '_blank');
+            });
         });
     }
     var eliminarRegistro = function() {
@@ -339,5 +477,39 @@
             total = subtotal * iva;
         }
         document.getElementById('total').value = total;
+    }
+
+    var mostrarRegistrosFacturaDetalle = function () {
+        var idFactura = $('#idfactura').val();
+        //$.ajax({
+        //    type: "POST",
+        //    url: "<?php //echo constant('URL')?>//Factura/ReadFacDetByIdModel",
+        //    data: {"idFactura": idFactura},
+        //    success: function (data) {
+        //        console.log("DATOS:"  + data);
+        //    }
+        //});
+        var table = $("#tablaFacturaDetalleConsulta").DataTable({
+            ajax: {
+                method: "POST",
+                url: "<?php echo constant('URL')?>Factura/ReadFacDetByIdModel",
+                data: {"idFactura": idFactura}
+            },
+            columns: [
+                {data: "fac_det_id"},
+                {data: "fac_det_con"},
+                {data: "fac_det_can"},
+                {data: "fac_det_pun"},
+                {data: "fac_det_imp"}
+            ],
+            responsive: true,
+            language: idiomaDataTable,
+            bDestroy: true,
+            lengthChange: true
+            // buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis'],
+            // dom: 'Bfltip'
+        });
+
+        // table.buttons().container().appendTo('#tablaFacturaDetalleConsulta_wrapper .col-md-6:eq(0)');
     }
 </script>

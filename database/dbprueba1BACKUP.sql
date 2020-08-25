@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-08-2020 a las 06:10:17
+-- Tiempo de generación: 24-08-2020 a las 08:30:46
 -- Versión del servidor: 10.1.35-MariaDB
 -- Versión de PHP: 7.2.9
 
@@ -65,11 +65,10 @@ CREATE TABLE `facturas` (
 --
 
 INSERT INTO `facturas` (`fac_id`, `cli_id`, `mon_id`, `fac_fec`, `fac_sub`, `fac_iva`, `fac_tot`, `fac_tc`) VALUES
-(1, 1, 1, '2020-08-16', '55.00', 55, '3025.00', '5'),
-(6, 3, 2, '2020-08-16', '120.00', 16, '38400.00', '20'),
-(7, 2, 2, '2020-08-17', '500.00', 16, '168000.00', '21'),
-(8, 2, 2, '2019-08-10', '5200.11', 16, '832017.60', '10'),
-(9, 1, 1, '2020-08-17', '7780.20', 16, '124483.20', '20');
+(22, 1, 1, '2020-08-24', '9190.00', 16, '147040.00', '22.20'),
+(23, 2, 2, '2020-08-24', '256.00', 16, '96501.76', '23.56'),
+(24, 1, 1, '2020-08-24', '62842.54', 16, '1005480.64', '22.30'),
+(25, 3, 1, '2020-08-24', '1424.43', 15, '21366.45', '22.10');
 
 -- --------------------------------------------------------
 
@@ -85,6 +84,26 @@ CREATE TABLE `facturas_detalle` (
   `fac_det_imp` decimal(9,2) DEFAULT NULL,
   `fac_det_con` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `facturas_detalle`
+--
+
+INSERT INTO `facturas_detalle` (`fac_id`, `fac_det_id`, `fac_det_can`, `fac_det_pun`, `fac_det_imp`, `fac_det_con`) VALUES
+(22, 1, 1, '5000.00', '5000.00', 'Laptop Dell'),
+(22, 2, 3, '150.00', '450.00', 'Mouse'),
+(22, 3, 2, '320.00', '640.00', 'Teclado'),
+(22, 4, 5, '620.00', '3100.00', 'USB 256GB'),
+(23, 1, 1, '60.00', '60.00', 'Disco Duro'),
+(23, 2, 3, '32.00', '96.00', 'USB 128 GB'),
+(23, 3, 2, '50.00', '100.00', 'Bocina'),
+(24, 1, 2, '1200.50', '2401.00', 'Hub USB'),
+(24, 2, 4, '2360.22', '9440.88', 'SmartBand'),
+(24, 3, 6, '8500.11', '51000.66', 'SmartWatch'),
+(25, 1, 1, '166.22', '166.22', 'Espuma limpiadora'),
+(25, 2, 2, '120.00', '240.00', 'Aire comprimido'),
+(25, 3, 4, '33.22', '132.88', 'Limpia pantallas'),
+(25, 4, 3, '295.11', '885.33', 'Desarmadores');
 
 -- --------------------------------------------------------
 
@@ -150,7 +169,7 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  MODIFY `fac_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `fac_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `monedas`

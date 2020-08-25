@@ -89,5 +89,26 @@
             }
             return json_encode($objFacturas, JSON_UNESCAPED_UNICODE);
         }
+
+        public function readbyid($id)
+        {
+            $query = "SELECT fac_id, f.mon_id, f.cli_id,fac_fec, fac_sub, fac_iva, fac_tot, fac_tc, cli_nombre, cli_rfc, mon_abr FROM facturas f INNER JOIN clientes c ON f.cli_id = c.cli_id INNER JOIN monedas m ON f.mon_id = m.mon_id
+                        WHERE f.fac_id = " . $id;
+            $objFacturas = null;
+            foreach ($this->db->consultar($query) as $key => $value) {
+                $objFacturas = $value;
+            }
+            return $objFacturas;
+        }
+
+        public function readMax()
+        {
+            $query = "SELECT  max(fac_id) as maxid FROM facturas";
+            $idFactura = null;
+            foreach ($this->db->consultar($query) as $key => $value) {
+                $idFactura = $value['maxid'];
+            }
+            return $idFactura;
+        }
     }
 ?>
